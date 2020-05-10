@@ -1,6 +1,6 @@
 
-p# Mad Lib
-# Create a story based on user input
+# Car Dealer
+# Create a cart based on user input
 
 from tkinter import *
  
@@ -92,29 +92,29 @@ class Application(Frame):
         """ Fill text box with new story based on user input. """
         # get values from the GUI
         person = self.person_ent.get()
-        noun = self.email_ent.get()
-        adjectives = ""
+        email = self.email_ent.get()
+        parts = ""
         if self.is_windows.get():
-            adjectives += "Tinted Windows $50, "
+            parts += "Tinted Windows $50, "
         if self.is_muffler.get():
-            adjectives += "Double Mufflers $1k, "
+            parts += "Double Mufflers $1k, "
         if self.is_stereo.get():
-            adjectives += "Stereo Upgrade $2k, "
-        body_part = self.body_part.get()
+            parts += "Stereo Upgrade $2k, "
+        car_type = self.car_type.get()
 
         # create the story
-        story = "The order for  "
+        story = "The order for "
         story += person
         story += " with the email of  "
-        story +=  #email
-        story += "Today you ordered:  "
-        story +=  # car type 
+        story +=  email
+        story += " Today you ordered: "
+        story += car_type  
         story += " with "
-        story += #parts 
-        story += "Added on to your "
-        story += # car 
+        story += parts 
+        story += " added on to your car. "
+
         
-       # display the story                                
+       # display the cart                               
         self.cart_txt.delete(0.0, END)
         self.cart_txt.insert(0.0, story)
 
