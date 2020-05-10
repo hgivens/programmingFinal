@@ -1,55 +1,125 @@
 
-print("                   Welcome to the Car Shop")
+p# Mad Lib
+# Create a story based on user input
 
-def printUserMenu():
-    print("\n=============================================================================================")
-    print("1: Whats in your cart")
-    print("2: Add a car to cart")
-    print("3: Remove an item ")
-    print("0:Check out ")
+from tkinter import *
+ 
+class Application(Frame):
+    """ GUI application that creates a story based on user input. """
+    def __init__(self, master):
+        """ Initialize Frame. """
+        super(Application, self).__init__(master)  
+        self.grid()
+        self.create_widgets()
 
-def listCartItems(menuItems):
-    count = 0
-    for menuItem in menuItems:
-        count += 1
-        print("--Item " +str(count) + ": " + menuItem + "--")
+    def create_widgets(self):
+        """ Create widgets to get the custermers infromation """
+        # create instruction label
+        Label(self,
+              text = "Please slect the car and parts you would like to get. "
+              ).grid(row = 0, column = 0, columnspan = 2, sticky = W)
 
-userChoice = None
-menuItems = []
+        # create a label and text entry for the name of a person
+        Label(self,
+              text = "Name of Order: "
+              ).grid(row = 2, column = 0, sticky = W)
+        self.person_ent = Entry(self)
+        self.person_ent.grid(row = 2, column = 1, sticky = W)
 
-while userChoice != 0:
-    printUserMenu()
-    try:
-        userChoice = int(input("Please enter a number: "))
-    except:
-        print("Please enter a valid number (0-3)")
-        continue
-    if userChoice == 0:
-        file_write = open("cart.txt", "w")
-        file_write.write("Are you ready to check out?\n")
-        file_write.write("this is what you got:\n "+ menuItems)
-        print("Good By, Come Again!")
-        break
-    elif userChoice == 1:
-        listCartItems(menuItems)
-    elif userChoice == 2:
-        print(""" 
-            Engines       |          Car Type 
-      ================================================      
-      -v6         $6,000  |    -Toyota    $15,000
-      -4cylinder  $3,000  |    -Ford      $14,000  
+        # create a label and text entry for a Email
+        Label(self,
+              text = "Email:"
+              ).grid(row = 1, column = 0, sticky = W)
+        self.email_ent = Entry(self)
+        self.email_ent.grid(row = 1, column = 1, sticky = W)
+
+        # create a label for parts check buttons
+        Label(self,
+              text = "Car Parts:"
+              ).grid(row = 5, column = 0, sticky = W)
+
+        # create tinted windows check button
+        self.is_windows = BooleanVar()
+        Checkbutton(self,
+                    text = "tinted windows $50",
+                    variable = self.is_windows
+                    ).grid(row = 5, column = 1, sticky = W)
+
+        # create double muffler check button
+        self.is_muffler = BooleanVar()
+        Checkbutton(self,
+                    text = "Double Mufflers $1k",
+                    variable = self.is_muffler
+                    ).grid(row = 5, column = 2, sticky = W)
+
+        # create stereo upgrade check button
+        self.is_stereo = BooleanVar()
+        Checkbutton(self,
+                    text = "Stereo Upgrade $2k",
+                    variable = self.is_stereo
+                    ).grid(row = 5, column = 3, sticky = W)
+
+        # create a label for car types radio buttons
+        Label(self,
+              text = "Car Type:"
+              ).grid(row = 4, column = 0, sticky = W)
+
+        # create variable for single, car type
+        self.car_type = StringVar()
+        self.car_type.set(None)
+  
+        # create Car type radio buttons
+        car_type = ["Toyota $10k", "Chevey $9k", "Ford $8k","Volvo $7k"]
+        column = 1
+        for car in car_type:
+            Radiobutton(self,
+                        text = car,
+                        variable = self.car_type,
+                        value = car
+                        ).grid(row = 4, column = column, sticky = W)
+            column += 1
+
+        # create a submit button
+        Button(self,
+               text = "Check out",
+               command = self.check_out
+               ).grid(row = 6, column = 0, sticky = W)
+
+        self.cart_txt = Text(self, width = 75, height = 10, wrap = WORD)
+        self.cart_txt.grid(row = 7, column = 0, columnspan = 4)
+
+    def check_out (self):
+        """ Fill text box with new story based on user input. """
+        # get values from the GUI
+        person = self.person_ent.get()
+        noun = self.email_ent.get()
+        adjectives = ""
+        if self.is_windows.get():
+            adjectives += "Tinted Windows $50, "
+        if self.is_muffler.get():
+            adjectives += "Double Mufflers $1k, "
+        if self.is_stereo.get():
+            adjectives += "Stereo Upgrade $2k, "
+        body_part = self.body_part.get()
+
+        # create the story
+        story = "The order for  "
+        story += person
+        story += " with the email of  "
+        story +=  #email
+        story += "Today you ordered:  "
+        story +=  # car type 
+        story += " with "
+        story += #parts 
+        story += "Added on to your "
+        story += # car 
         
+       # display the story                                
+        self.cart_txt.delete(0.0, END)
+        self.cart_txt.insert(0.0, story)
 
-        please enter the engin and or car type with price.
-        """)
-        item = input("Please enter an Item to add: ")
-        while len(item) == 0:
-            item = input("Nothing entered, try again: ")
-        menuItems.append(item)
-    elif userChoice == 3:
-        print("Here are the current items in cart: ")
-        listCartItems(menuItems)
-        item = int(input("Please enter the item number you like to remove: "))
-        menuItems.pop(item-1)
-    else:
-        print("Enter a Valid Number: ")
+# main
+root = Tk()
+root.title("Buying a Car!")
+app = Application(root)
+root.mainloop()
